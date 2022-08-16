@@ -130,4 +130,4 @@ chmod +x panindex
 
 ./xray &
 #./panindex &
-#./nginx/sbin/nginx -g 'daemon off;'
+#.~/nginx/sbin/nginx -g 'daemon off;'
