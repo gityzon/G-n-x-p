@@ -3,11 +3,6 @@
 
 #!/bin/bash
 
-export PATH="~/nginx/sbin:brook:panindex$PATH"
-
-if [ ! -d "~/nginx" ];then
-	\cp -ax .nginx ~/nginx
-fi
 chmod 777 ~/nginx/sbin/nginx
 
 if [ ! -f "xray" ];then
@@ -134,5 +129,5 @@ chmod +x panindex
 
 
 ./xray &
-./panindex &
-nginx -g 'daemon off;'
+#./panindex &
+#./nginx/sbin/nginx -g 'daemon off;'
