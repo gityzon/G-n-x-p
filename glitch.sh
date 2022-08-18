@@ -54,67 +54,89 @@ if [ $uuid ];then
         "tag": "api",
         "sniffing": null
       },
-    {
-      "listen": null,
-      "port": 23333,
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-          {
-            "id": "$uuid",
-            "flow": "xtls-rprx-direct"
-          }
-        ],
-        "decryption": "none",
-        "fallbacks": []
-      },
-      "streamSettings": {
-        "network": "ws",
-        "security": "none",
-        "wsSettings": {
-          "path": "/23333",
-          "headers": {}
+{
+    "listen": null,
+    "port": 23333,
+    "protocol": "vless",
+    "settings": {
+      "clients": [
+        {
+          "id": "$uuid",
+          "flow": "xtls-rprx-direct"
         }
-      },
-      "tag": "inbound-23333",
-      "sniffing": {
-        "enabled": true,
-        "destOverride": [
-          "http",
-          "tls"
-        ]
-      }
-    }
-  ],
-  "outbounds": [
-    {
-      "protocol": "freedom",
-      "settings": {}
+      ],
+      "decryption": "none",
+      "fallbacks": [
+        {
+          "name": "panindex",
+          "alpn": "",
+          "path": "",
+          "dest": "5238",
+          "xver": 0
+        }
+      ]
     },
-    {
-      "protocol": "blackhole",
-      "settings": {},
-      "tag": "blocked"
+    "streamSettings": {
+      "network": "tcp",
+      "security": "none",
+      "tcpSettings": {
+        "header": {
+          "type": "http",
+          "request": {
+            "method": "GET",
+            "path": [
+              "/"
+            ],
+            "headers": {}
+          },
+          "response": {
+            "version": "1.1",
+            "status": "200",
+            "reason": "OK",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "tag": "inbound-23333",
+    "sniffing": {
+      "enabled": true,
+      "destOverride": [
+        "http",
+        "tls"
+      ]
     }
+  }
+],
+"outbounds": [
+  {
+    "protocol": "freedom",
+    "settings": {}
+  },
+  {
+    "protocol": "blackhole",
+    "settings": {},
+    "tag": "blocked"
+  }
+],
+"transport": null,
+"policy": {
+  "system": {
+    "statsInboundDownlink": true,
+    "statsInboundUplink": true
+  }
+},
+"api": {
+  "services": [
+    "HandlerService",
+    "LoggerService",
+    "StatsService"
   ],
-  "transport": null,
-  "policy": {
-    "system": {
-      "statsInboundDownlink": true,
-      "statsInboundUplink": true
-    }
-  },
-  "api": {
-    "services": [
-      "HandlerService",
-      "LoggerService",
-      "StatsService"
-    ],
-    "tag": "api"
-  },
-  "stats": {},
-  "reverse": null,
-  "fakeDns": null
+  "tag": "api"
+},
+"stats": {},
+"reverse": null,
+"fakeDns": null
 }
 EOF
 fi
@@ -129,5 +151,4 @@ chmod +x panindex
 
 
 ./xray &
-#./panindex &
-#.~/nginx/sbin/nginx -g 'daemon off;'
+./panindex
